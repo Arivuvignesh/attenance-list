@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Attendance Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    .submit-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: red;
+    }
+    /* Toggle switch style */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+  </style>
+</head>
+<body>
+
+<h2>Daily Attendance</h2>
+
+<form id="attendanceForm">
+  <table>
+    <thead>
+      <tr>
+        <th>Roll No</th>
+        <th>Student Name</th>
+        <th>Present (On/Off)</th>
+      </tr>
+    </thead>
+    <tbody id="studentTableBody">
+      <!-- Students will be added here by JS -->
+    </tbody>
+  </table>
+
+  <button type="submit" class="submit-btn">Submit</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+  const students = [
+    { roll: "9924018001", name: "ABISHEK A" },
+    { roll: "9924018002", name: "ABISHEK P" },
+    { roll: "9924018004", name: "AJAYRAJA V" },
+    { roll: "9924018005", name: "AJITHA S" },
+    { roll: "9924018006", name: "AKASH P" },
+    { roll: "9924018007", name: "AKASH PRABU A" },
+    { roll: "9924018008", name: "AKSHAYA V" },
+    { roll: "9924018009", name: "ALHASSINA A" },
+    { roll: "9924018010", name: "ARAVINDKUMAR V" },
+    { roll: "9924018011", name: "ARIRAMAN R" },
+    { roll: "9924018012", name: "ARIVU NITHI K" },
+    { roll: "9924018013", name: "ARIVUVIGNESHKUMAR S" },
+    { roll: "9924018014", name: "ARJUN U S" },
+    { roll: "9924018015", name: "ARUN PRASATH S" },
+    { roll: "9924018016", name: "ARUNACHALAHARIHARAN S" },
+    { roll: "9924018017", name: "BALA MURUGAN T" },
+    { roll: "9924018018", name: "BLESSING K" },
+    { roll: "9924018019", name: "BUVANESH K R" },
+    { roll: "9924018020", name: "CHINNASWAMI K" },
+    { roll: "9924018021", name: "CHRISTINANTHONYRAJ A" },
+    { roll: "9924018022", name: "DEEPAK MANIKANDAN K" },
+    { roll: "9924018024", name: "DINESH K" },
+    { roll: "9924018025", name: "DIVYA K" },
+    { roll: "9924018026", name: "ESAKKIMUTHU P" },
+    { roll: "9924018027", name: "GANESHKUMAR M" },
+    { roll: "9924018028", name: "GANESHKUMAR M" },
+    { roll: "9924018029", name: "GOKUL KRISHNAN P" },
+    { roll: "9924018030", name: "HARIHARAN M" },
+    { roll: "9924018031", name: "HARIHARAN P" },
+    { roll: "9924018032", name: "HARIHARAN P" },
+    { roll: "9924018033", name: "HARSHAD V" },
+    { roll: "9924018034", name: "HASMATH KATHUN H" },
+    { roll: "9924018035", name: "M HERAM" },
+    { roll: "9924018036", name: "INDHUMATHY E" },
+    { roll: "9924018037", name: "JEGATHEESWARAN M" },
+    { roll: "9924018038", name: "JAMES G" },
+    { roll: "9924018039", name: "JAYAKRISHNAN S" },
+    { roll: "9924018040", name: "JEEVITHASAKTHI M" },
+    { roll: "9924018041", name: "KARTHIK R" },
+    { roll: "9924018042", name: "KAVIMUKILAN S" },
+    { roll: "9924018043", name: "KAVIRAJAN K" },
+    { roll: "9924018044", name: "KISHORE S" },
+    { roll: "9924018045", name: "KODIPANDI C" },
+    { roll: "9924018046", name: "LAVANYA P" },
+    { roll: "9924018047", name: "ALAGUJOTHI M" },
+    { roll: "9924018048", name: "MAHALINGAM D" },
+    { roll: "9924018049", name: "MALAIRAJAG G" },
+    { roll: "9924018050", name: "MANIKANDARAJA P" },
+    { roll: "9924018051", name: "MANOJ KUMAR M" },
+    { roll: "9924018107", name: "BARATHKUMAR S" },
+    { roll: "9924018108", name: "DEEPAK M" },
+    { roll: "9924018112", name: "AKSHAT ROSHAN P" },
+    { roll: "9924018117", name: "ANANDHA KUMAR M" },
+    { roll: "9924018118", name: "MOHANA RAJAN P" },
+    { roll: "9924018119", name: "KATHIR RAM A" },
+    { roll: "9924018120", name: "AATHI VINESH M" },
+    { roll: "9924018121", name: "MADHAN KUMAR S" },
+    { roll: "9924018122", name: "HARISH G" },
+    { roll: "9924018123", name: "NAVIARASU M" },
+    { roll: "9924018125", name: "BATHMAAVATHII V" }
+  ];
+
+  const tableBody = document.getElementById("studentTableBody");
+
+  students.forEach(student => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${student.roll}</td>
+      <td>${student.name}</td>
+      <td>
+        <label class="switch">
+          <input type="checkbox" name="attendance_${student.roll}" checked>
+          <span class="slider"></span>
+        </label>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  document.getElementById("attendanceForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const absentList = [];
+
+    students.forEach(student => {
+      const checkbox = document.querySelector(`input[name="attendance_${student.roll}"]`);
+      if (!checkbox.checked) {
+        absentList.push(`${student.roll} - ${student.name}`);
+      }
+    });
+
+    document.getElementById("result").innerHTML = `
+      <h3>Absent Students:</h3>
+      <pre>${absentList.length ? absentList.join("\n") : "No one is absent!"}</pre>
+    `;
+  });
+</script>
+
+</body>
+</html>
